@@ -1,0 +1,22 @@
+{
+  "name": "tirjok/crud",
+  "description": "CRUD generator package for laravel.",
+  "keywords": ["laravel", "crud", "crud generator"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Abu Baker Siddique",
+      "email": "abskomol@gmail.com",
+      "homepage": "http://www.tirjok.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Tirjok\\CrudGenerator\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=5.5.9",
+    "illuminate/support": "5.3.*"
+  }
+}

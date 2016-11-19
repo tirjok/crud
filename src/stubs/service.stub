@@ -1,0 +1,30 @@
+<?php
+
+namespace DummyNamespace;
+
+use DummyRootNamespaceRepositories\{{repositoryName}};
+use DummyRootNamespaceServices\BaseService;
+
+class DummyClass extends BaseService
+{
+    /**
+     * @var \DummyRootNamespaceRepositories\{{repositoryName}}
+     */
+    protected $repository;
+
+    /**
+     * @param \DummyRootNamespaceRepositories\{{repositoryName}} $repository
+     */
+    public function __construct({{modelName}}Repository $repository)
+    {
+        $this->repository = $repository;
+    }
+
+    /**
+     * @return \DummyRootNamespaceRepositories\Repository
+     */
+    public function getRepository()
+    {
+        return $this->repository;
+    }
+}
