@@ -70,6 +70,7 @@ Options:
 | `--fields` | Fields name for the form & migration. e.g. ```--fields="title#string; content#text; category#select#options=technology,tips,health; user_id#integer#unsigned"``` |
 | `--route` | Include Crud route to routes.php? yes or no |
 | `--pk` | The name of the primary key |
+| `--sd` | Add soft delete to migration and model? yes or no. Default ```no``` |
 | `--view-path` | The name of the view path |
 | `--namespace` | The namespace of the CRUD  |
 | `--route-group` | Prefix of the route group |
