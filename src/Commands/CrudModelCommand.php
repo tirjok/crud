@@ -16,7 +16,8 @@ class CrudModelCommand extends GeneratorCommand
                             {--table= : The name of the table.}
                             {--fillable= : The names of the fillable columns.}
                             {--relationships= : The relationships for the model}
-                            {--pk=id : The name of the primary key.}';
+                            {--pk=id : The name of the primary key.}
+                            {--sd=no : Add soft delete to model? yes|no.}';
 
     /**
      * The console command description.
@@ -70,6 +71,7 @@ class CrudModelCommand extends GeneratorCommand
         $table = $this->option('table') ?: $this->argument('name');
         $fillable = $this->option('fillable');
         $primaryKey = $this->option('pk');
+        $softDelete = $this->option('sd');
         $relationships = trim($this->option('relationships')) != '' ? explode(',', trim($this->option('relationships'))) : [];
 
         if (!empty($primaryKey)) {
@@ -87,6 +89,7 @@ EOD;
         $ret = $this->replaceNamespace($stub, $name)
             ->replaceTable($stub, $table)
             ->replaceFillable($stub, $fillable)
+            ->replaceSoftDelete($stub, $softDelete)
             ->replacePrimaryKey($stub, $primaryKey);
 
         foreach ($relationships as $rel) {
@@ -202,6 +205,34 @@ EOD;
     protected function replaceRelationshipPlaceholder(&$stub)
     {
         $stub = str_replace('{{relationships}}', '', $stub);
+        return $this;
+    }
+
+    /**
+     * Add soft delete to model
+     *
+     * @param $stub
+     * @param $sd
+     *
+     * @return $this
+     */
+    protected function replaceSoftDelete(&$stub, $sd)
+    {
+        $softDelete = '';
+        $useSoftDelete = '';
+
+        if ('yes' === strtolower($sd)) {
+            $softDelete = <<<EOD
+use SoftDeletes;
+EOD;
+
+            $useSoftDelete = <<<EOD
+use Illuminate\Database\Eloquent\SoftDeletes;
+EOD;
+        }
+
+        $stub = str_replace(['{{useSoftDelete}}', '{{softDelete}}'], [$useSoftDelete, $softDelete], $stub);
+
         return $this;
     }
 }

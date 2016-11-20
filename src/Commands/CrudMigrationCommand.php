@@ -16,7 +16,8 @@ class CrudMigrationCommand extends GeneratorCommand
                             {--schema= : The name of the schema.}
                             {--indexes= : The fields to add an index too.}
                             {--foreign-keys= : Foreign keys.}
-                            {--pk=id : The name of the primary key.}';
+                            {--pk=id : The name of the primary key.}
+                            {--sd=no : Add soft delete to migration? yes|no.}';
 
     /**
      * The console command description.
@@ -209,14 +210,21 @@ class CrudMigrationCommand extends GeneratorCommand
         }
 
         $primaryKey = $this->option('pk');
+        $softDelete = '';
+
+        if ('yes' === strtolower($this->option('sd'))) {
+            $softDelete = "\$table->softDeletes();\n" . $tabIndent . $tabIndent . $tabIndent;
+        }
+
 
         $schemaUp =
             "Schema::create('" . $tableName . "', function(Blueprint \$table) {
             \$table->increments('" . $primaryKey . "');
-            " . $schemaFields . "\$table->timestamps();
+            " . $schemaFields . $softDelete .
+            "\$table->timestamps();
         });";
 
-        $schemaDown = "Schema::drop('" . $tableName . "');";
+        $schemaDown = "Schema::dropIfExists('" . $tableName . "');";
 
         return $this->replaceSchemaUp($stub, $schemaUp)
             ->replaceSchemaDown($stub, $schemaDown)

@@ -3,9 +3,11 @@
 namespace DummyNamespace;
 
 use Illuminate\Database\Eloquent\Model;
+{{useSoftDelete}}
 
 class DummyClass extends Model
 {
+    {{softDelete}}
     /**
      * The database table used by the model.
      *
