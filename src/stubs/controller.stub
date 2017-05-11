@@ -6,13 +6,23 @@ use DummyRootNamespaceHttp\Controllers\Controller;
 use DummyRootNamespaceServices\{{serviceName}};
 use Illuminate\Http\Request;
 use Session;
+use Tirjok\CrudGenerator\Traits\CrudControllerTrait;
 
 class DummyClass extends Controller
 {
+    use CrudControllerTrait;
+
     /**
      * @var \DummyRootNamespaceServices\{{serviceName}}
      */
     private $service;
+
+    public $crudName = '{{crudName}}';
+    public $viewPath = '{{viewPath}}';
+    public $viewName = '{{viewName}}';
+    public $crudNameSingular = '{{crudNameSingular}}';
+    public $modelName = '{{modelName}}';
+    public $routeGroup = '{{routeGroup}}';
 
     /**
      * @param \DummyRootNamespaceServices\{{serviceName}} $service
@@ -20,28 +30,6 @@ class DummyClass extends Controller
     public function __construct({{modelName}}Service $service)
     {
         $this->service = $service;
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function index()
-    {
-        ${{crudName}} = $this->service->all();
-
-        return view('{{viewPath}}{{viewName}}.index', compact('{{crudName}}'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function create()
-    {
-        return view('{{viewPath}}{{viewName}}.create');
     }
 
     /**
@@ -61,26 +49,6 @@ class DummyClass extends Controller
         Session::flash('flash_message', '{{modelName}} added!');
 
         return redirect('{{routeGroup}}{{viewName}}');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     *
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
-     */
-    public function show($id)
-    {
-        ${{crudNameSingular}} = $this->service->find($id);
-
-        if (!${{crudNameSingular}}) {
-            Session::flash('flash_error', '{{modelName}} not found!');
-
-            return redirect('{{routeGroup}}{{viewName}}');
-        }
-
-        return view('{{viewPath}}{{viewName}}.show', compact('{{crudNameSingular}}'));
     }
 
     /**
