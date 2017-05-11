@@ -52,26 +52,6 @@ class DummyClass extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     *
-     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
-     */
-    public function edit($id)
-    {
-        ${{crudNameSingular}} = $this->service->find($id);
-
-        if (!${{crudNameSingular}}) {
-            Session::flash('flash_error', '{{modelName}} not found!');
-
-            return redirect('{{routeGroup}}{{viewName}}');
-        }
-
-        return view('{{viewPath}}{{viewName}}.edit', compact('{{crudNameSingular}}'));
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @param  int  $id
@@ -92,29 +72,6 @@ class DummyClass extends Controller
             Session::flash('flash_error', '{{modelName}} failed to updated!');
         }
 
-
-        return redirect('{{routeGroup}}{{viewName}}');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     *
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function destroy($id)
-    {
-        try {
-            $is_deleted = $this->service->delete($id);
-
-            if ($is_deleted) {
-                Session::flash('flash_message', '{{modelName}} deleted!');
-            }
-
-        } catch (\Exception $e) {
-            Session::flash('flash_error', 'There is no data regarding this id');
-        }
 
         return redirect('{{routeGroup}}{{viewName}}');
     }
