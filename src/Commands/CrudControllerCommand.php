@@ -83,26 +83,7 @@ class CrudControllerCommand extends GeneratorCommand
         $validations = rtrim($this->option('validations'), ';');
         $serviceName = $namespace.$modelName.'Service';
 
-        $validationRules = '';
-        if (trim($validations) != '') {
-            $validationRules = "\$this->validate(\$request, [";
-
-            $rules = explode(';', $validations);
-            foreach ($rules as $v) {
-                if (trim($v) == '') {
-                    continue;
-                }
-
-                // extract field name and args
-                $parts = explode('#', $v);
-                $fieldName = trim($parts[0]);
-                $rules = trim($parts[1]);
-                $validationRules .= "\n\t\t\t'$fieldName' => '$rules',";
-            }
-
-            $validationRules = substr($validationRules, 0, -1); // lose the last comma
-            $validationRules .= "\n\t\t]);";
-        }
+        $validationRules = $this->buildValidationRulesStr($validations);
 
         $snippet = <<<EOD
 if (\$request->hasFile('{{fieldName}}')) {
@@ -120,7 +101,6 @@ EOD;
         $fileSnippet = '';
 
         if ($fields) {
-            $x = 0;
             foreach ($fieldsArray as $item) {
                 $itemArray = explode('#', $item);
 
@@ -312,5 +292,37 @@ EOD;
         );
 
         return $this;
+    }
+
+    /**
+     * Build Validation rules string
+     *
+     * @param $validations
+     *
+     * @return string
+     */
+    protected function buildValidationRulesStr($validations)
+    {
+        $validationRules = '';
+        if (trim($validations) != '') {
+            $validationRules = "\$this->validate(\$request, [";
+
+            $rules = explode(';', $validations);
+            foreach ($rules as $v) {
+                if (trim($v) == '') {
+                    continue;
+                }
+
+                // extract field name and args
+                $parts = explode('#', $v);
+                $fieldName = trim($parts[0]);
+                $rules = trim($parts[1]);
+                $validationRules .= "\n\t\t\t'$fieldName' => '$rules',";
+            }
+
+            $validationRules = substr($validationRules, 0, -1); // lose the last comma
+            $validationRules .= "\n\t\t]);";
+        }
+        return $validationRules;
     }
 }
