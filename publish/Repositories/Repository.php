@@ -68,7 +68,7 @@ abstract class Repository
      *
      * @param array $filter
      *
-     * @return \Illuminate\Pagination\LengthAwarePaginator
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Pagination\LengthAwarePaginator
      */
     public function getFilterWithPaginatedData(array $filter)
     {
@@ -150,7 +150,7 @@ abstract class Repository
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Database\Eloquent\Builder|Model
      * @throws NotFoundResourceException
      */
     public function makeModel()
